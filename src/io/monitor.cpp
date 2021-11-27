@@ -14,3 +14,8 @@ void Monitor::print(const DateTime &timestamp) {
 
   Serial.println(datetime);
 }
+
+void Monitor::print(const char message[]) {
+  Serial.println(message);
+}
+

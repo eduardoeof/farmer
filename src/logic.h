@@ -7,7 +7,7 @@ class Logic {
 
 public:
   bool shouldLightOn(const DateTime &now);
-  // getDelayTime
+  unsigned long getDelayTime();
 };
 
 #endif

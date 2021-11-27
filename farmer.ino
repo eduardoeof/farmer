@@ -24,6 +24,6 @@ void loop() {
     monitor.print("NO!!!");
   }
 
-  delay(1000);
+  delay(logic.getDelayTime());
 }
 

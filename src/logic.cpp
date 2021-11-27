@@ -14,3 +14,4 @@ bool Logic::shouldLightOn(const DateTime &now) {
 unsigned long Logic::getDelayTime() {
   return (unsigned long) DELAY_SECONDS * 1000;
 }
+

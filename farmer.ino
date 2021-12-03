@@ -3,7 +3,6 @@
 #include "src/io/light.h"
 #include "src/logic.h"
 
-
 #include <RTClib.h> // Include DateTime
 
 Monitor monitor;

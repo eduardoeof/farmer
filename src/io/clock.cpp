@@ -12,7 +12,7 @@ void Clock::setup() {
 
   if (rtc->lostPower()) {
     Serial.println("RTC lost power. Adjusting time to now");
-    rtc->adjust(DateTime(F(__DATE__), F(__TIME__))); // set datetime to the compile time
+    rtc->adjust(DateTime(__DATE__, __TIME__)); // set datetime to the compile time
   }
 }
 

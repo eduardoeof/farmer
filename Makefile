@@ -1,5 +1,5 @@
 fqbn = arduino:avr:uno
-port = /dev/cu.usbmodem143301
+port = /dev/cu.usbserial-14330
 
 compile:
 	arduino-cli compile --fqbn ${fqbn} .

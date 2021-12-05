@@ -6,7 +6,7 @@
 #include <DallasTemperature.h>
 
 LiquidTemperatureSensor::LiquidTemperatureSensor() {
-  oneWire = new OneWire(LIQUID_TEMPERATURE_SENSOR_DIGITAL_PIN);
+  oneWire = new OneWire(LIQUID_TEMPERATURE_DIGITAL_PIN);
   sensor = new DallasTemperature(oneWire);
 }
 

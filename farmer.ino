@@ -1,6 +1,7 @@
 #include "src/io/monitor.h"
 #include "src/io/clock.h"
 #include "src/io/light.h"
+#include "src/io/liquid-temperature-sensor.h"
 #include "src/logic.h"
 
 #include <RTClib.h> // Include DateTime
@@ -9,27 +10,29 @@ Monitor monitor;
 Clock clock;
 Logic logic;
 Light light;
+LiquidTemperatureSensor liquidTemp;
 
 void setup() {
   monitor.setup();
   clock.setup();
   light.setup();
+  liquidTemp.setup();
 
   delayToFinishSetup();
 }
 
 void loop() {
   DateTime now = clock.now();
+  float liquidTemperature = liquidTemp.getTemperature();
+  bool lightOn = logic.shouldLightOn(now);
 
-  monitor.print(now);
- 
-  if (logic.shouldLightOn(now)) {
+  if (lightOn) {
     light.turnOn();
-    monitor.print("Light on");
   } else {
     light.turnOff();
-    monitor.print("Light off");
   }
+
+  monitor.print("Heath check", now, liquidTemperature, lightOn);
 
   delay(logic.getDelayTime());
 }

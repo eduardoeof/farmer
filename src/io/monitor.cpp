@@ -27,7 +27,7 @@ void Monitor::print(const char message[], const DateTime &timestamp, float liqui
   char liquidTemperatureStr [6];
   dtostrf(liquidTemperature, 4, 2, liquidTemperatureStr);
 
-  sprintf(data, "[%d/%d/%d %d:%d:%d] [LT %s°C] [Light %s] %s", 
+  sprintf(data, "%d/%d/%d %d:%d:%d | LT %s°C | Light %s | %s", 
       timestamp.day(), timestamp.month(), timestamp.year(),
       timestamp.hour(), timestamp.minute(), timestamp.second(),
       liquidTemperatureStr, lightOnStr.c_str(), message);

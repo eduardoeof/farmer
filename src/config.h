@@ -1,0 +1,10 @@
+#ifndef CONFIG_HEADER 
+#define CONFIG_HEADER 
+
+#define LIGHT_ON_START_HOUR 8
+#define LIGHT_ON_END_HOUR 20
+
+#define DELAY_APP_SECONDS 60
+
+#endif
+

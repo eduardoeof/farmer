@@ -1,17 +1,15 @@
 #include "logic.h"
 
+#include "config.h"
+
 #include <RTClib.h> // Include DateTime
 
-#define LIGHT_ON_HOUR_BEGIN 8
-#define LIGHT_ON_HOUR_END 20
-#define DELAY_SECONDS 60
-
 bool Logic::shouldLightOn(const DateTime &now) {
-  return (now.hour() >= LIGHT_ON_HOUR_BEGIN) &&
-         (now.hour() < LIGHT_ON_HOUR_END);
+  return (now.hour() >= LIGHT_ON_START_HOUR) &&
+         (now.hour() < LIGHT_ON_END_HOUR);
 }
 
 unsigned long Logic::getDelayTime() {
-  return (unsigned long) DELAY_SECONDS * 1000;
+  return (unsigned long) DELAY_APP_SECONDS * 1000;
 }
 

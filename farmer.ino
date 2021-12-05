@@ -2,6 +2,7 @@
 #include "src/io/clock.h"
 #include "src/io/light.h"
 #include "src/io/liquid-temperature-sensor.h"
+#include "src/io/water-level-sensor.h"
 #include "src/logic.h"
 
 #include <RTClib.h> // Include DateTime
@@ -10,21 +11,24 @@ Monitor monitor;
 Clock clock;
 Logic logic;
 Light light;
-LiquidTemperatureSensor liquidTemp;
+LiquidTemperatureSensor liquidTemperatureSensor;
+WaterLevelSensor waterLevelSensor;
 
 void setup() {
   monitor.setup();
   clock.setup();
   light.setup();
-  liquidTemp.setup();
+  liquidTemperatureSensor.setup();
+  waterLevelSensor.setup();
 
   delayToFinishSetup();
 }
 
 void loop() {
   DateTime now = clock.now();
-  float liquidTemperature = liquidTemp.getTemperature();
+  float temperature = liquidTemperatureSensor.getTemperature();
   bool lightOn = logic.shouldLightOn(now);
+  int waterLevel = waterLevelSensor.getLevel();
 
   if (lightOn) {
     light.turnOn();
@@ -32,7 +36,7 @@ void loop() {
     light.turnOff();
   }
 
-  monitor.print("Heath check", now, liquidTemperature, lightOn);
+  monitor.print("Heath check", now, temperature, lightOn, waterLevel);
 
   delay(logic.getDelayTime());
 }

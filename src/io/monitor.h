@@ -2,7 +2,6 @@
 #define SERIAL_HEADER
 
 class DateTime;
-class String;
 
 class Monitor {
 

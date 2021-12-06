@@ -3,6 +3,7 @@
 #include "src/io/light.h"
 #include "src/io/liquid-temperature-sensor.h"
 #include "src/io/water-level-sensor.h"
+#include "src/io/oled-display.h"
 #include "src/logic.h"
 
 #include <RTClib.h> // Include DateTime
@@ -13,6 +14,7 @@ Logic logic;
 Light light;
 LiquidTemperatureSensor liquidTemperatureSensor;
 WaterLevelSensor waterLevelSensor;
+OLEDDisplay display;
 
 void setup() {
   monitor.setup();
@@ -20,6 +22,7 @@ void setup() {
   light.setup();
   liquidTemperatureSensor.setup();
   waterLevelSensor.setup();
+  display.setup();
 
   delayToFinishSetup();
 }
@@ -36,6 +39,7 @@ void loop() {
     light.turnOff();
   }
 
+  display.print(now, temperature, lightOn, waterLevel);
   monitor.print("Heath check", now, temperature, lightOn, waterLevel);
 
   delay(logic.getDelayTime());

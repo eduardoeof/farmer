@@ -26,23 +26,41 @@ void OLEDDisplay::print(const DateTime &timestamp, float temperature, bool light
   display->setTextSize(1);
   display->setTextColor(WHITE);
 
-  char title[20];
-  sprintf(title, "%d/%d/%d %d:%d:%d", 
-      timestamp.day(), timestamp.month(), timestamp.year(), 
-      timestamp.hour(), timestamp.minute(), timestamp.second());
+  char line[20];
+  buildTitleLine(timestamp, line);
   display->setCursor(0, 0);
-  display->println(title);
+  display->println(line);
 
-  //String lightOnStr = lightOn ? "On" : "Off";
-  char temperatureStr [6];
-  dtostrf(temperature, 4, 2, temperatureStr);
-
-  char body[20];
-  sprintf(body, "Temp: %s oC\nLight: %s\nWater level: %d", temperatureStr, lightOn ? "On" : "Off", waterLevel);
-  //sprintf(body, "Temp: %s oC\nLight: %s\nWater level: %d", temperatureStr, lightOnStr.c_str(), waterLevel);
+  buildTemperatureLine(temperature, line);
   display->setCursor(0, 16);
-  display->println(body);
+  display->println(line);
+
+  buildLightLine(lightOn, line);
+  display->println(line);
+
+  buildWaterLevelLine(waterLevel, line);
+  display->println(line);
 
   display->display(); 
+}
+
+void OLEDDisplay::buildTitleLine(const DateTime &timestamp, char *line) {
+  sprintf(line, "%d/%d/%d %d:%d:%d", 
+      timestamp.day(), timestamp.month(), timestamp.year(), 
+      timestamp.hour(), timestamp.minute(), timestamp.second());
+}
+
+void OLEDDisplay::buildTemperatureLine(float temperature, char *line) {
+  char temperatureStr[10];
+  dtostrf(temperature, 4, 2, temperatureStr);
+  sprintf(line, "Temp: %s oC", temperatureStr);
+}
+
+void OLEDDisplay::buildLightLine(bool lightOn, char *line) {
+  sprintf(line, "Light: %s", lightOn ? "On" : "Off");
+}
+
+void OLEDDisplay::buildWaterLevelLine(int waterLevel, char *line) {
+  sprintf(line, "Water level: %d", waterLevel);
 }
 

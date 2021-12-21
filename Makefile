@@ -1,4 +1,4 @@
-fqbn = arduino:avr:uno
+fqbn = arduino:avr:mega
 port = /dev/cu.usbserial-14330
 
 compile:

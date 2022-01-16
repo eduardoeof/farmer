@@ -9,7 +9,7 @@ bool Logic::shouldLightOn(const DateTime &now) {
          (now.hour() < LIGHT_ON_END_HOUR);
 }
 
-unsigned long Logic::getDelayTime() {
+unsigned long Logic::getLoopDelay() {
   return (unsigned long) DELAY_APP_SECONDS * 1000;
 }
 

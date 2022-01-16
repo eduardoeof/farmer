@@ -15,3 +15,6 @@ all: compile upload monitor
 tutorial:
 	open https://arduino.github.io/arduino-cli/0.20/getting-started/
 
+lib:
+	arduino-cli lib install $(name)
+

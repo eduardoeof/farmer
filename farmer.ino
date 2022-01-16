@@ -42,7 +42,7 @@ void loop() {
   display.print(now, temperature, lightOn, waterLevel);
   monitor.print("Heath check", now, temperature, lightOn, waterLevel);
 
-  delay(logic.getDelayTime());
+  delay(logic.getLoopDelay());
 }
 
 void delayToFinishSetup() {

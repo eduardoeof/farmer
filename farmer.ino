@@ -5,6 +5,8 @@
 #include "src/io/water-level-sensor.h"
 #include "src/io/oled-display.h"
 #include "src/logic.h"
+#include "src/db/pump-metrics.h"
+#include "src/model/pump-metrics.h""
 
 #include <RTClib.h> // Include DateTime
 
@@ -15,6 +17,7 @@ Light light;
 LiquidTemperatureSensor liquidTemperatureSensor;
 WaterLevelSensor waterLevelSensor;
 OLEDDisplay display;
+PumpMetricsDB db;
 
 void setup() {
   monitor.setup();
@@ -23,6 +26,7 @@ void setup() {
   liquidTemperatureSensor.setup();
   waterLevelSensor.setup();
   display.setup();
+  db.setup();
 
   delayToFinishSetup();
 }
@@ -41,6 +45,9 @@ void loop() {
 
   display.print(now, temperature, lightOn, waterLevel);
   monitor.print("Heath check", now, temperature, lightOn, waterLevel);
+
+  PumpMetrics p = PumpMetrics(now, &now);
+  db.save(p);
 
   delay(logic.getLoopDelay());
 }

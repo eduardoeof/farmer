@@ -6,8 +6,10 @@
 
 #include "../model/pump-metrics.h"
 
+#define DATETIME_FORMAT "YYYY-MM-DDThh:mm:ss"
+
 void PumpMetricsDB::setup() {
-  //pinMode(53, OUTPUT);
+  pinMode(53, OUTPUT);
 
   if (!SD.begin(53)) {
     Serial.println("Error: PumpMetricsDB setup failed");
@@ -16,24 +18,25 @@ void PumpMetricsDB::setup() {
 }
 
 void PumpMetricsDB::save(PumpMetrics &p) {
-  File json = SD.open("pump-metrics.json", FILE_WRITE);
+  //File json = SD.open("pump-metrics.json", FILE_WRITE);
+  File json = SD.open("write.txt", FILE_WRITE);
 
   if (json) {
     StaticJsonDocument<200> doc;    
 
-    char turnedOnAt[20];
-    p.getTurnedOnAt().toString(turnedOnAt);
+    char *turnedOnAt = p.getTurnedOnAt().toString(DATETIME_FORMAT);
+
+    Serial.println(turnedOnAt);
 
     doc["turnedOnAt"] = turnedOnAt; 
 
     if (p.getTurnedOffAt()) {
-      char turnedOffAt[20];
-      p.getTurnedOffAt()->toString(turnedOffAt);
+      char *turnedOffAt = p.getTurnedOffAt()->toString(DATETIME_FORMAT);
 
       doc["turnedOffAt"] = turnedOffAt; 
     }
 
-    char content[40];
+    char content[200];
     serializeJsonPretty(doc, content);
 
     Serial.println(content);

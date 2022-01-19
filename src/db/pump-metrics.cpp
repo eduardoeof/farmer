@@ -5,14 +5,15 @@
 #include <SPI.h>
 
 #include "../model/pump-metrics.h"
+#include "../config.h"
 
 #define DATETIME_FORMAT "YYYY-MM-DDThh:mm:ss"
 #define FILE_NAME "pumpmet.txt"
 
 void PumpMetricsDB::setup() {
-  pinMode(53, OUTPUT);
+  pinMode(SD_CS_DIGITAL_PIN, OUTPUT);
 
-  if (!SD.begin(53)) {
+  if (!SD.begin(SD_CS_DIGITAL_PIN)) {
     Serial.println("Error: PumpMetricsDB setup failed");
     while (true);
   }
@@ -21,7 +22,7 @@ void PumpMetricsDB::setup() {
 void PumpMetricsDB::save(PumpMetrics &p) {
   SD.remove(FILE_NAME);
 
-  File file = SD.open("pumpmet.txt", FILE_WRITE);
+  File file = SD.open(FILE_NAME, FILE_WRITE);
 
   if (file) {
     StaticJsonDocument<200> doc;
@@ -31,14 +32,13 @@ void PumpMetricsDB::save(PumpMetrics &p) {
 
     if (p.getTurnedOffAt()) {
       char *turnedOffAt = p.getTurnedOffAt()->toString(DATETIME_FORMAT);
-
       doc["turnedOffAt"] = turnedOffAt;
     }
 
     char content[200];
     serializeJsonPretty(doc, content);
-
     file.println(content);
+
     file.close();
   } else {
     Serial.println("Error: PumpMetricsDB save failed");

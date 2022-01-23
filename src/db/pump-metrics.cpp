@@ -20,14 +20,16 @@ void PumpMetricsDB::setup() {
 }
 
 void PumpMetricsDB::save(PumpMetrics &p) {
-  SD.remove(FILE_NAME);
+  if(SD.exists(FILE_NAME)) {
+    SD.remove(FILE_NAME);
+  }
 
   File file = SD.open(FILE_NAME, FILE_WRITE);
 
   if (file) {
     StaticJsonDocument<200> doc;
 
-    char *turnedOnAt = p.getTurnedOnAt().toString(DATETIME_FORMAT);
+    char *turnedOnAt = p.getTurnedOnAt()->toString(DATETIME_FORMAT);
     doc["turnedOnAt"] = turnedOnAt;
 
     if (p.getTurnedOffAt()) {
@@ -36,12 +38,40 @@ void PumpMetricsDB::save(PumpMetrics &p) {
     }
 
     char content[200];
-    serializeJsonPretty(doc, content);
-    file.println(content);
+    serializeJson(doc, content);
 
+    Serial.println("Save content");
+    Serial.println(content);
+
+    file.println(content);
     file.close();
   } else {
     Serial.println("Error: PumpMetricsDB save failed");
   }
 }
 
+PumpMetrics * PumpMetricsDB::load() {
+  File file = SD.open(FILE_NAME);
+    
+  if (file) {
+    String content;
+
+    while(file.available()) {
+      char c = file.read();
+      content.concat(c);
+    }
+
+    file.close();
+
+    StaticJsonDocument<200> doc;
+    deserializeJson(doc, content);    
+
+    const char *turnedOnAt = doc["turnedOnAt"];
+    const char *turnedOffAt = doc["turnedOffAt"];
+
+    return new PumpMetrics(turnedOnAt, turnedOffAt);
+  } else {
+    Serial.println("PumpMetricsDB file not found");
+    return NULL;
+  }
+}

@@ -9,7 +9,7 @@ class PumpMetricsDB {
 public:
   void setup();
   void save(PumpMetrics &p);
-  //PumpMetrics load();
+  PumpMetrics * load();
 };
 
 #endif

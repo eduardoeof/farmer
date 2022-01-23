@@ -8,14 +8,15 @@ class PumpMetrics {
 public:
   PumpMetrics(const DateTime &tOnAt);
   PumpMetrics(const DateTime &tOnAt, const DateTime *tOffAt);
+  PumpMetrics(const char *tOnAt, const char *tOffAt);
 
   bool getOn();
-  DateTime getTurnedOnAt();
+  DateTime * getTurnedOnAt();
   DateTime * getTurnedOffAt();
   
 private:
   const bool on;
-  const DateTime &turnedOnAt;
+  const DateTime *turnedOnAt;
   const DateTime *turnedOffAt;
 };
 

@@ -4,9 +4,8 @@
 #include "src/io/liquid-temperature-sensor.h"
 #include "src/io/water-level-sensor.h"
 #include "src/io/oled-display.h"
+#include "src/io/water-pump.h"
 #include "src/logic.h"
-#include "src/db/pump-metrics.h"
-#include "src/model/pump-metrics.h""
 
 #include <RTClib.h> // Include DateTime
 
@@ -17,7 +16,7 @@ Light light;
 LiquidTemperatureSensor liquidTemperatureSensor;
 WaterLevelSensor waterLevelSensor;
 OLEDDisplay display;
-PumpMetricsDB db;
+WaterPump waterPump;
 
 void setup() {
   monitor.setup();
@@ -26,16 +25,15 @@ void setup() {
   liquidTemperatureSensor.setup();
   waterLevelSensor.setup();
   display.setup();
-  db.setup();
+  waterPump.setup();
 
   delayToFinishSetup();
 }
 
 void loop() {
   DateTime now = clock.now();
-  float temperature = liquidTemperatureSensor.getTemperature();
+
   bool lightOn = logic.shouldLightOn(now);
-  int waterLevel = waterLevelSensor.getLevel();
 
   if (lightOn) {
     light.turnOn();
@@ -43,11 +41,19 @@ void loop() {
     light.turnOff();
   }
 
+  bool pumpOn = logic.shouldWaterPumpOn(now);
+
+  if (pumpOn) {
+    waterPump.turnOn();
+  } else {
+    waterPump.turnOff();
+  }
+
+  float temperature = liquidTemperatureSensor.getTemperature();
+  int waterLevel = waterLevelSensor.getLevel();
+
   display.print(now, temperature, lightOn, waterLevel);
   monitor.print("Heath check", now, temperature, lightOn, waterLevel);
-
-  PumpMetrics p = PumpMetrics(now, &now);
-  db.save(p);
 
   delay(logic.getLoopDelay());
 }

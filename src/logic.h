@@ -2,12 +2,14 @@
 #define LOGIC_HEADER
 
 class DateTime;
+class PumpMetrics;
 
 class Logic {
 
 public:
-  bool shouldLightOn(const DateTime &now);
   unsigned long getLoopDelay();
+  bool shouldLightOn(const DateTime &now);
+  bool shouldWaterPumpOn(const DateTime &now);
 };
 
 #endif

@@ -55,7 +55,7 @@ void loop() {
   Metrics metrics(now, temperature, waterLevel, lightOn, waterPumpOn);
 
   display.print(metrics);
-  monitor.print("Heath check", now, temperature, lightOn, waterLevel);
+  monitor.print("Heath check", metrics);
 
   delay(logic.getLoopDelay());
 }

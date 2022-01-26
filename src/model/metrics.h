@@ -7,7 +7,6 @@ class Metrics {
 public:
   Metrics(const DateTime &now, float waterTemperature, int waterLevel, bool lightOn, bool waterPumpOn);
 
-private:
   const DateTime &now;
   const float waterTemperature;
   const int waterLevel;

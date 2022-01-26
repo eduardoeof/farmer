@@ -5,6 +5,8 @@
 #include <Adafruit_SSD1306.h>
 #include <RTClib.h> // Include DateTime
 
+#include "../model/metrics.h"
+
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 64
 
@@ -21,24 +23,27 @@ void OLEDDisplay::setup() {
   }
 }
 
-void OLEDDisplay::print(const DateTime &timestamp, float temperature, bool lightOn, int waterLevel) {
+void OLEDDisplay::print(const Metrics &metrics) {
   display->clearDisplay();
   display->setTextSize(1);
   display->setTextColor(WHITE);
 
   char line[20];
-  buildTitleLine(timestamp, line);
+  buildTitleLine(metrics.now, line);
   display->setCursor(0, 0);
   display->println(line);
 
-  buildTemperatureLine(temperature, line);
+  buildTemperatureLine(metrics.waterTemperature, line);
   display->setCursor(0, 16);
   display->println(line);
 
-  buildLightLine(lightOn, line);
+  buildLightLine(metrics.lightOn, line);
   display->println(line);
 
-  buildWaterLevelLine(waterLevel, line);
+  buildWaterLevelLine(metrics.waterLevel, line);
+  display->println(line);
+
+  buildWaterPumpLine(metrics.waterPumpOn, line);
   display->println(line);
 
   display->display(); 
@@ -64,3 +69,6 @@ void OLEDDisplay::buildWaterLevelLine(int waterLevel, char *line) {
   sprintf(line, "Water level: %d", waterLevel);
 }
 
+void OLEDDisplay::buildWaterPumpLine(bool waterPumpOn, char *line) {
+  sprintf(line, "Pump: %s", waterPumpOn ? "On" : "Off");
+}

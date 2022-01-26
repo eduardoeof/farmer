@@ -6,6 +6,7 @@
 #include "src/io/oled-display.h"
 #include "src/io/water-pump.h"
 #include "src/logic.h"
+#include "src/model/metrics.h"
 
 #include <RTClib.h> // Include DateTime
 
@@ -41,9 +42,9 @@ void loop() {
     light.turnOff();
   }
 
-  bool pumpOn = logic.shouldWaterPumpOn(now);
+  bool waterPumpOn = logic.shouldWaterPumpOn(now);
 
-  if (pumpOn) {
+  if (waterPumpOn) {
     waterPump.turnOn();
   } else {
     waterPump.turnOff();
@@ -51,8 +52,9 @@ void loop() {
 
   float temperature = liquidTemperatureSensor.getTemperature();
   int waterLevel = waterLevelSensor.getLevel();
+  Metrics metrics(now, temperature, waterLevel, lightOn, waterPumpOn);
 
-  display.print(now, temperature, lightOn, waterLevel);
+  display.print(metrics);
   monitor.print("Heath check", now, temperature, lightOn, waterLevel);
 
   delay(logic.getLoopDelay());

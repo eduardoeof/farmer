@@ -10,6 +10,11 @@
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 64
 
+#define WATER_TEMPERATURE_LINE "WTemp:  %s C"
+#define LIGHT_LINE             "Light:  %s"
+#define WATER_LEVEL_LINE       "Wlevel: %d"
+#define WATER_PUMP_LINE        "WPump:  %s" 
+
 OLEDDisplay::OLEDDisplay() {
   display = new Adafruit_SSD1306(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 }
@@ -58,17 +63,17 @@ void OLEDDisplay::buildTitleLine(const DateTime &timestamp, char *line) {
 void OLEDDisplay::buildTemperatureLine(float temperature, char *line) {
   char temperatureStr[10];
   dtostrf(temperature, 4, 2, temperatureStr);
-  sprintf(line, "Temp: %s oC", temperatureStr);
+  sprintf(line, WATER_TEMPERATURE_LINE, temperatureStr);
 }
 
 void OLEDDisplay::buildLightLine(bool lightOn, char *line) {
-  sprintf(line, "Light: %s", lightOn ? "On" : "Off");
+  sprintf(line, LIGHT_LINE, lightOn ? "On" : "Off");
 }
 
 void OLEDDisplay::buildWaterLevelLine(int waterLevel, char *line) {
-  sprintf(line, "Water level: %d", waterLevel);
+  sprintf(line, WATER_LEVEL_LINE, waterLevel);
 }
 
 void OLEDDisplay::buildWaterPumpLine(bool waterPumpOn, char *line) {
-  sprintf(line, "Pump: %s", waterPumpOn ? "On" : "Off");
+  sprintf(line, WATER_PUMP_LINE, waterPumpOn ? "On" : "Off");
 }

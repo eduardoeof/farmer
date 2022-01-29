@@ -10,10 +10,12 @@
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 64
 
-#define WATER_TEMPERATURE_LINE "WTemp:  %s C"
+#define AIR_TEMPERATURE_LINE   "ATemp:  %sC" 
+#define WATER_TEMPERATURE_LINE "WTemp:  %sC"
+#define HUMIDITY_LINE          "Humid:  %s%%" 
 #define LIGHT_LINE             "Light:  %s"
-#define WATER_LEVEL_LINE       "Wlevel: %d"
 #define WATER_PUMP_LINE        "WPump:  %s" 
+#define WATER_LEVEL_LINE       "Wlevel: %d"
 
 OLEDDisplay::OLEDDisplay() {
   display = new Adafruit_SSD1306(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
@@ -38,17 +40,23 @@ void OLEDDisplay::print(const Metrics &metrics) {
   display->setCursor(0, 0);
   display->println(line);
 
-  buildTemperatureLine(metrics.waterTemperature, line);
+  buildAirTemperatureLine(metrics.airTemperature, line);
+  display->println(line);
+
+  buildWaterTemperatureLine(metrics.waterTemperature, line);
   display->setCursor(0, 16);
+  display->println(line);
+
+  buildHumidityLine(metrics.humidity, line);
   display->println(line);
 
   buildLightLine(metrics.lightOn, line);
   display->println(line);
 
-  buildWaterLevelLine(metrics.waterLevel, line);
+  buildWaterPumpLine(metrics.waterPumpOn, line);
   display->println(line);
 
-  buildWaterPumpLine(metrics.waterPumpOn, line);
+  buildWaterLevelLine(metrics.waterLevel, line);
   display->println(line);
 
   display->display(); 
@@ -60,7 +68,7 @@ void OLEDDisplay::buildTitleLine(const DateTime &timestamp, char *line) {
       timestamp.hour(), timestamp.minute(), timestamp.second());
 }
 
-void OLEDDisplay::buildTemperatureLine(float temperature, char *line) {
+void OLEDDisplay::buildWaterTemperatureLine(float temperature, char *line) {
   char temperatureStr[10];
   dtostrf(temperature, 4, 2, temperatureStr);
   sprintf(line, WATER_TEMPERATURE_LINE, temperatureStr);
@@ -76,4 +84,16 @@ void OLEDDisplay::buildWaterLevelLine(int waterLevel, char *line) {
 
 void OLEDDisplay::buildWaterPumpLine(bool waterPumpOn, char *line) {
   sprintf(line, WATER_PUMP_LINE, waterPumpOn ? "On" : "Off");
+}
+
+void OLEDDisplay::buildAirTemperatureLine(float temperature, char *line) {
+  char temperatureStr[10];
+  dtostrf(temperature, 4, 2, temperatureStr);
+  sprintf(line, AIR_TEMPERATURE_LINE, temperatureStr);
+}
+
+void OLEDDisplay::buildHumidityLine(float humidity, char *line) {
+  char humidityStr[10];
+  dtostrf(humidity, 4, 2, humidityStr);
+  sprintf(line, HUMIDITY_LINE, humidityStr);
 }

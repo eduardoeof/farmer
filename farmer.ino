@@ -5,6 +5,7 @@
 #include "src/io/water-level-sensor.h"
 #include "src/io/oled-display.h"
 #include "src/io/water-pump.h"
+#include "src/io/air-sensor.h"
 #include "src/logic.h"
 #include "src/model/metrics.h"
 
@@ -18,6 +19,7 @@ LiquidTemperatureSensor liquidTemperatureSensor;
 WaterLevelSensor waterLevelSensor;
 OLEDDisplay display;
 WaterPump waterPump;
+AirSensorIO airSensor;
 
 void setup() {
   monitor.setup();
@@ -27,6 +29,7 @@ void setup() {
   waterLevelSensor.setup();
   display.setup();
   waterPump.setup();
+  airSensor.setup();
 
   delayToFinishSetup();
 }
@@ -50,9 +53,11 @@ void loop() {
     waterPump.turnOff();
   }
 
-  float temperature = liquidTemperatureSensor.getTemperature();
+  float liquidTemp = liquidTemperatureSensor.getTemperature();
+  float airTemp = airSensor.getTemperature();
+  float humidity = airSensor.getHumidity();
   int waterLevel = waterLevelSensor.getLevel();
-  Metrics metrics(now, temperature, waterLevel, lightOn, waterPumpOn);
+  Metrics metrics(now, liquidTemp, waterLevel, lightOn, waterPumpOn, airTemp, humidity);
 
   display.print(metrics);
   monitor.print("Heath check", metrics);

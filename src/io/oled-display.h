@@ -17,10 +17,12 @@ class OLEDDisplay {
     Adafruit_SSD1306 *display;
 
     void buildTitleLine(const DateTime &timestamp, char *title);
-    void buildTemperatureLine(float temperature, char *line);
+    void buildWaterTemperatureLine(float temperature, char *line);
     void buildLightLine(bool lightOn, char *line);
     void buildWaterLevelLine(int waterLevel, char *line);
     void buildWaterPumpLine(bool waterPumpOn, char *line);
+    void buildAirTemperatureLine(float temperature, char *line);
+    void buildHumidityLine(float humidity, char *line);
 };
 
 #endif

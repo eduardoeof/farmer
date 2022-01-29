@@ -42,14 +42,19 @@ void Monitor::print(const char message[], const Metrics &metrics) {
   String lightOn = metrics.lightOn ? "On" : "Off";
   String waterPumpOn = metrics.waterPumpOn ? "On" : "Off";
   char waterTemperatureStr[6];
+  char airTemperatureStr[6];
+  char humidityStr[6];
   dtostrf(metrics.waterTemperature, 4, 2, waterTemperatureStr);
+  dtostrf(metrics.airTemperature, 4, 2, airTemperatureStr);
+  dtostrf(metrics.humidity, 4, 2, humidityStr);
 
   char data[100];
-  sprintf(data, "%d/%d/%d %d:%d:%d | LT %s°C | Light %s | Pump %s | WL %d | %s", 
-          now.day(), now.month(), now.year(),
-          now.hour(), now.minute(), now.second(),
-          waterTemperatureStr, lightOn.c_str(), waterPumpOn.c_str(),
-          metrics.waterLevel, message);
+  sprintf(data, "%d/%d/%d %d:%d:%d | WT %s°C | AT %s°C | Humi %s%% | Light %s | Pump %s | WL %d | %s",
+      now.day(), now.month(), now.year(), 
+      now.hour(), now.minute(), now.second(), 
+      waterTemperatureStr, airTemperatureStr, humidityStr,
+      lightOn.c_str(), waterPumpOn.c_str(), metrics.waterLevel, 
+      message);
 
   Serial.println(data);
 }

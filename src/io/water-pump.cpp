@@ -9,10 +9,10 @@ void WaterPump::setup() {
 }
 
 void WaterPump::turnOn() {
-  digitalWrite(WATER_PUMP_DIGITAL_PIN, HIGH);
+  digitalWrite(WATER_PUMP_DIGITAL_PIN, LOW);
 }
 
 void WaterPump::turnOff() {
-  digitalWrite(WATER_PUMP_DIGITAL_PIN, LOW);
+  digitalWrite(WATER_PUMP_DIGITAL_PIN, HIGH);
 }
 

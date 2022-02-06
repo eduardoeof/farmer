@@ -9,11 +9,10 @@ void WaterPump::setup() {
 }
 
 void WaterPump::turnOn() {
-  // For some reason, the relay used turn on when the port gets LOW
-  digitalWrite(WATER_PUMP_DIGITAL_PIN, LOW);
+  digitalWrite(WATER_PUMP_DIGITAL_PIN, HIGH);
 }
 
 void WaterPump::turnOff() {
-  digitalWrite(WATER_PUMP_DIGITAL_PIN, HIGH);
+  digitalWrite(WATER_PUMP_DIGITAL_PIN, LOW);
 }
 

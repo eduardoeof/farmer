@@ -17,8 +17,9 @@ unsigned long Logic::getLoopDelay() {
 }
 
 bool Logic::shouldWaterPumpOn(const DateTime &now) {
-  return (now.hour() == PUMP_WATER_ON_START_HOUR_1 ||
-          now.hour() == PUMP_WATER_ON_START_HOUR_2) &&
+  return (now.hour() == PUMP_WATER_ON_START_CICLE_1_HOUR ||
+          now.hour() == PUMP_WATER_ON_START_CICLE_2_HOUR ||
+          now.hour() == PUMP_WATER_ON_START_CICLE_3_HOUR) &&
          now.minute() <= PUMP_WATER_ON_DURATION_MINUTES;
 }
 
